@@ -16,23 +16,36 @@ function Calculator({ workouts, allowSound }) {
     [durationBreak, number, sets, speed],
   );
 
+  useEffect(
+    function () {
+      const playSound = function () {
+        if (!allowSound) return;
+        const sound = new Audio(clickSound);
+        sound.play();
+      };
+
+      playSound();
+    },
+    [duration, allowSound],
+  );
+
   function handleInc() {
     setDuration((duration) => Math.floor(duration) + 1);
   }
 
   function handleDec() {
-    setDuration((duration) => duration > 1 ? Math.ceil(duration) - 1 : 0);
+    setDuration((duration) => (duration > 1 ? Math.ceil(duration) - 1 : 0));
   }
 
-  // const duration = (number * sets * speed) / 60 + (sets - 1) * durationBreak;
+  useEffect(
+    function () {
+      document.title = `Your ${number}-exercise workout`;
+    },
+    [number],
+  );
+
   const mins = Math.floor(duration);
   const seconds = (duration - mins) * 60;
-
-  const playSound = function () {
-    if (!allowSound) return;
-    const sound = new Audio(clickSound);
-    sound.play();
-  };
 
   return (
     <>
